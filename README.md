@@ -1,3 +1,6 @@
+# Changes:
+* Added support to get items via the ID.
+
 # node-csgo-cdn
 
 Retrieves the Steam CDN URLs for CS:GO Item Images from their `market_hash_name` or properties.
@@ -74,6 +77,7 @@ const cdn = new csgoCDN(user, {logLevel: 'debug'});
 cdn.on('ready', () => {
    console.log(cdn.getItemNameURL('M4A4 | 龍王 (Dragon King) (Field-Tested)'));
    console.log(cdn.getItemNameURL('★ Karambit | Gamma Doppler (Factory New)', cdn.phase.emerald));
+   console.log(cdn.getItemNameURL('id874'));
 });
 ```
 

@@ -1,15 +1,19 @@
 const SteamUser = require('steam-user');
-const SteamTotp = require('steam-totp');
 const csgoCDN = require('./index');
 
 const cred = {
-    username: 'USERNAME',
-    password: 'PASSWORD',
-    shared_secret: 'SHARED_SECRET',
+    accountName: 'USERNAME',
+    password: 'PASSWORD'
 };
 
 const user = new SteamUser({enablePicsCache: true});
 const cdn = new csgoCDN(user, {musicKits: true, cases: true, tools: true, statusIcons: true, logLevel: 'debug'});
+
+user.logOn(cred);
+
+user.on('loggedOn', () => {
+    console.log('Logged onto Steam');
+});
 
 cdn.on('ready', () => {
     console.log(cdn.getStickerURL('cologne2016/astr_gold', false));
@@ -45,30 +49,8 @@ cdn.on('ready', () => {
     console.log(cdn.getItemNameURL('AK-47'));
     console.log(cdn.getItemNameURL('★ Karambit | Forest DDPAT'));
     console.log(cdn.getItemNameURL('AWP | Redline'));
-});
 
-SteamTotp.getAuthCode(cred.shared_secret, (err, code) => {
-    if (err) {
-        throw err;
-    }
-
-    const loginDetails = {
-        accountName: cred.username,
-        password: cred.password,
-        rememberPassword: true,
-        twoFactorCode: code,
-        logonID: 2121,
-    };
-
-    console.log('Logging into Steam....');
-
-    user.logOn(loginDetails);
-});
-
-user.on('loggedOn', () => {
-    console.log('Logged onto Steam');
-});
-
-user.on('contentServersReady', () => {
-    console.log('Content servers ready');
+    // Get item via ID
+    // Response with the url and the name of the item
+    console.log(cdn.getItemNameURL('id874'));
 });

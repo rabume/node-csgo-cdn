@@ -858,6 +858,59 @@ class CSGOCdn extends EventEmitter {
         else if (marketHashName.startsWith('Patch |')) {
             return this.getPatchNameURL(marketHashName);
         }
+        else if (marketHashName.startsWith('id')) {
+
+            let only_id = marketHashName;
+
+            only_id = only_id.replace('id', '');
+
+            let item = this.itemsGame.items[only_id];
+
+            let item_name = this.itemsGame.items[only_id].item_name;
+            let replace_hash = item_name.replace('#', '');
+
+            let final_item_name = this.csgoEnglish[replace_hash];
+            
+            if (final_item_name == undefined) {
+                final_item_name =  item.name;
+            }
+
+            let path;
+            
+            if (item.image_inventory) {
+                path = `resource/flash/${item.image_inventory}.png`;
+            }else {
+                console.log("Can not resolve this id!")
+            }
+
+            const url = this.getPathURL(path);
+
+            // If service medal is requested, check what level the 
+            // requested medal is.
+            if (item.image_inventory.includes('_lvl')) {
+                let lastPart = item.image_inventory.split("_").pop();
+                final_item_name = final_item_name + " (" + lastPart + ")";
+            }else if (item.image_inventory == "econ/status_icons/service_medal_2015") {
+                final_item_name = final_item_name + " (lvl1)";
+            }else if (item.image_inventory == "econ/status_icons/service_medal_2015_2") {
+                final_item_name = final_item_name + " (lvl2)";
+            }
+            
+            //Check if requested item is "Genuine"
+            if (item.prefab == "attendance_pin") {
+                final_item_name = final_item_name + " (Genuine)";
+            }
+
+            let finalData = [];
+            finalData = {
+                url: url, 
+                name: final_item_name
+            }
+
+            if (finalData) {
+                return (finalData);
+            }
+        }
         else {
             // Other in items
             for (const t of this.csgoEnglish['inverted'][marketHashName] || []) {

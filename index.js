@@ -159,7 +159,7 @@ class CSGOCdn extends EventEmitter {
             const csgo = packages['730'].appinfo;
             const commonDepot = csgo.depots['731'];
 
-            return commonDepot.manifests.public;
+            return commonDepot.manifests.public.gid;
         });
     }
 
@@ -595,7 +595,7 @@ class CSGOCdn extends EventEmitter {
             }
         }
     }
-    
+
     /**
      * Returns the patch URL given the market hash name
      * @param marketHashName Patch name
@@ -870,13 +870,13 @@ class CSGOCdn extends EventEmitter {
             let replace_hash = item_name.replace('#', '');
 
             let final_item_name = this.csgoEnglish[replace_hash];
-            
+
             if (final_item_name == undefined) {
                 final_item_name =  item.name;
             }
 
             let path;
-            
+
             if (item.image_inventory) {
                 path = `resource/flash/${item.image_inventory}.png`;
             }else {
@@ -885,7 +885,7 @@ class CSGOCdn extends EventEmitter {
 
             const url = this.getPathURL(path);
 
-            // If service medal is requested, check what level the 
+            // If service medal is requested, check what level the
             // requested medal is.
             if (item.image_inventory.includes('_lvl')) {
                 let lastPart = item.image_inventory.split("_").pop();
@@ -895,7 +895,7 @@ class CSGOCdn extends EventEmitter {
             }else if (item.image_inventory == "econ/status_icons/service_medal_2015_2") {
                 final_item_name = final_item_name + " (lvl2)";
             }
-            
+
             //Check if requested item is "Genuine"
             if (item.prefab == "attendance_pin") {
                 final_item_name = final_item_name + " (Genuine)";
@@ -903,7 +903,7 @@ class CSGOCdn extends EventEmitter {
 
             let finalData = [];
             finalData = {
-                url: url, 
+                url: url,
                 name: final_item_name
             }
 
